@@ -146,27 +146,37 @@ document.addEventListener('DOMContentLoaded', () => {
         gif.src = "https://i.pinimg.com/originals/98/ed/29/98ed29a15944ee61c41c0e340f698b57.gif";
         floatingHeartDuration = 400;
       } else {
-        yesBtn.textContent = "Love you";
-        yesBtn.addEventListener("click", () => {
-          const numberOfHearts = Math.floor(Math.random() * 6) + 5;
-          for (let i = 0; i < numberOfHearts; i++) {
-            createHeartFromButton(yesBtn);
-          }
-        });
-        noBtn.textContent = "Love you 3000";
-        noBtn.classList.add("yes-btn");
-        noBtn.classList.remove("no-btn");
-        noBtn.removeEventListener("mouseover", noBtnHover);
-        noBtn.addEventListener("click", () => {
-          const numberOfHearts = Math.floor(Math.random() * 6) + 5;
-          for (let i = 0; i < numberOfHearts; i++) {
-            createHeartFromButton(noBtn, true);
-          }
-        });
-        question.innerHTML = "Aaaaaaaa, I love you very much";
-        gif.style.width = gif.style.height = '80%';
-        gif.src = "https://i.pinimg.com/originals/89/35/50/89355081a213ca3f622b0b39b94e9016.gif";
-        floatingHeartDuration = 300;
+        if (yesPressedCount > 10) {
+          question.innerHTML = "Will you be my girl?";
+          yesBtn.textContent = "Yes";
+          noBtn.textContent = "Yes, I will";
+          floatingHeartDuration = 200;
+          gif.style.width = gif.style.height = '90%';
+          gif.src = "https://i.pinimg.com/originals/4f/47/d1/4f47d14cb35629ba81c2cc2ab59395b0.gif"
+        } else {
+          yesBtn.textContent = "Love you";
+          yesBtn.addEventListener("click", () => {
+            const numberOfHearts = Math.floor(Math.random() * 3) + 3;
+            for (let i = 0; i < numberOfHearts; i++) {
+              createHeartFromButton(yesBtn);
+            }
+          });
+          noBtn.textContent = "Love you 3000";
+          noBtn.classList.add("yes-btn");
+          noBtn.classList.remove("no-btn");
+          noBtn.removeEventListener("mouseover", noBtnHover);
+          noBtn.addEventListener("click", () => {
+            yesPressedCount++;
+            const numberOfHearts = Math.floor(Math.random() * 6) + 5;
+            for (let i = 0; i < numberOfHearts; i++) {
+              createHeartFromButton(noBtn, true);
+            }
+          });
+          question.innerHTML = "Aaaaaaaa, I love you very much";
+          gif.style.width = gif.style.height = '80%';
+          gif.src = "https://i.pinimg.com/originals/89/35/50/89355081a213ca3f622b0b39b94e9016.gif";
+          floatingHeartDuration = 300;
+        }
       }
     } else {
       yesBtn.textContent = "Really?";

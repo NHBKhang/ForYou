@@ -1,5 +1,4 @@
-*
-{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -10,13 +9,15 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: whitesmoke;
+    background: white;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    overflow: hidden;
 }
 
 .gif {
-    height: 100%;
-    width: 100%;
+    height: 85%;
+    width: 85%;
+    object-fit: cover;
 }
 
 h2 {
@@ -25,6 +26,7 @@ h2 {
     color: #e94d58;
     margin: 15px 0;
 }
+
 .btn-group {
     width: 100%;
     height: 50px;
@@ -32,10 +34,13 @@ h2 {
     justify-content: center;
     margin-top: 50px;
 }
+
 button {
     position: absolute;
-    width: 150px;
-    height: inherit;
+    min-width: 150px;
+    max-width: 300px;
+    width: auto;
+    height: 50px;
     color: white;
     font-size: 1.2em;
     border-radius: 30px;
@@ -43,14 +48,114 @@ button {
     cursor: pointer;
     box-shadow: 0 2px 4px gray;
     border: 2px solid #e94d58;
-    font-size: 1.2em;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.2s, color 0.3s;
+    z-index: 1000;
 }
-button:nth-child(1) {
-    margin-left: -200px;
-    background: #e94d58;
-}
-button:nth-child(2) {
-    margin-right: -200px;
+
+button.no-btn {
     background: white;
     color: #e94d58;
+    right: 32%;
+}
+
+button.yes-btn {
+    background: linear-gradient(45deg, #f8a5c2, #e94d58);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    left: 32%;
+}
+
+button.no-btn:hover {
+    background: #e94d58;
+    color: white;
+}
+
+button.yes-btn:hover {
+    background: linear-gradient(45deg, #f86a9f, #d23f52);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+button.yes-btn:active {
+    background: linear-gradient(45deg, #f86a9f, #b2334e);
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+}
+
+button.yes-btn.clicked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 105, 180, 0) 80%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    animation: glow 1.5s ease-out forwards;
+}
+
+.heart-container {
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+
+.heart {
+    position: absolute;
+    bottom: var(--bottom, 100px);
+    width: var(--size, 50px);
+    height: var(--size, 50px);
+    background-color: rgb(255, 0, 0);
+    animation: float 5s ease-in-out infinite;
+}
+
+.heart::before,
+.heart::after {
+    content: '';
+    position: absolute;
+    width: var(--size, 50px);
+    height: var(--size, 50px);
+    background-color: rgb(255, 0, 0);
+    border-radius: 50%;
+}
+
+.heart::before {
+    top: calc(-1 * var(--size, 50px) / 2);
+    left: 0;
+}
+
+.heart::after {
+    left: calc(var(--size, 50px) / 2);
+    top: 0;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) rotate(-45deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--translateX, 0px), var(--translateY, -600px)) rotate(-45deg);
+        opacity: 0;
+    }
+}
+
+@keyframes glow {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
 }

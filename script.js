@@ -60,6 +60,38 @@ document.addEventListener('DOMContentLoaded', () => {
     noBtn.style.top = `${randomY}px`;
   }
 
+  function createHeartFromButton(button) {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+
+    const size = Math.random() * 30 + 20;
+    heart.style.width = `${size}px`;
+    heart.style.height = `${size}px`;
+
+    heart.style.setProperty('--size', `${size}px`);
+
+    const buttonRect = button.getBoundingClientRect();
+    const heartX = buttonRect.left + (buttonRect.width / 2) - (size / 2);
+    const heartY = buttonRect.top + (buttonRect.height / 2) - (size / 2);
+
+    heart.style.left = `${heartX}px`;
+    heart.style.bottom = `${window.innerHeight - heartY}px`;
+
+    const translateX = Math.random() * 200 - 200;
+    const translateY = Math.random() * -500 - 400;
+    const duration = Math.random() * 2 + 3;
+
+    heart.style.animation = `float ${duration}s ease-in-out infinite`;
+    heart.style.setProperty('--translateX', `${translateX}px`);
+    heart.style.setProperty('--translateY', `${translateY}px`);
+
+    heartContainer.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 5000);
+  }
+
   noBtn.addEventListener("mouseover", noBtnHover);
 
   yesBtn.addEventListener('click', () => {
@@ -82,8 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         noBtn.textContent = "Love you 3000";
         noBtn.classList.add("yes-btn");
         noBtn.classList.remove("no-btn");
-        noBtn.style.right = '35%';
         noBtn.removeEventListener("mouseover", noBtnHover);
+        noBtn.addEventListener("click", createHeartFromButton);
         question.innerHTML = "Aaaaaaaa, I love you very much";
         gif.style.width = gif.style.height = '80%';
         gif.src = "https://i.pinimg.com/originals/89/35/50/89355081a213ca3f622b0b39b94e9016.gif";

@@ -38,7 +38,7 @@ h2 {
 button {
     position: absolute;
     min-width: 150px;
-    max-width: 300px;
+    max-width: 200px;
     width: auto;
     height: 50px;
     color: white;
@@ -52,16 +52,22 @@ button {
     z-index: 1000;
 }
 
+button:nth-child(1) {
+    margin-left: -200px;
+}
+
+button:nth-child(2) {
+    margin-right: -200px;
+}
+
 button.no-btn {
     background: white;
     color: #e94d58;
-    right: 32%;
 }
 
 button.yes-btn {
     background: linear-gradient(45deg, #f8a5c2, #e94d58);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    left: 32%;
 }
 
 button.no-btn:hover {

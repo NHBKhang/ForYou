@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const wrapper = document.querySelector(".wrapper");
   const question = document.querySelector(".question");
   const gif = document.querySelector(".gif");
   const noBtn = document.querySelector(".no-btn");
@@ -9,6 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let heartsCreated = false;
   let yesPressedCount = 0;
   let noHoverCount = 0;
+  let floatingHeartDuration = 500;
+
+  const noBtnInitialRect = noBtn.getBoundingClientRect();
+  const noBtnInitialPos = {
+    left: noBtnInitialRect.left,
+    top: noBtnInitialRect.top
+  };
 
   function noBtnHover() {
     noHoverCount++;
@@ -60,11 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
     noBtn.style.top = `${randomY}px`;
   }
 
-  function createHeartFromButton(button) {
+  function createHeartFromButton(button, big = false) {
     const heart = document.createElement('div');
     heart.classList.add('heart');
 
-    const size = Math.random() * 30 + 20;
+    let size = Math.random() * 30 + 20;
+    if (big) size += 15;
     heart.style.width = `${size}px`;
     heart.style.height = `${size}px`;
 
@@ -87,9 +94,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     heartContainer.appendChild(heart);
 
-    setTimeout(() => {
-      heart.remove();
-    }, 5000);
+    setTimeout(() => heart.remove(), 5000);
+  }
+
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+
+    const size = Math.random() * 30 + 20;
+    heart.style.width = `${size}px`;
+    heart.style.height = `${size}px`;
+
+    heart.style.setProperty('--size', `${size}px`);
+
+    heart.style.left = `${Math.random() * 100}%`;
+
+    const bottom = Math.random() * 100;
+    heart.style.bottom = `${bottom}px`;
+
+    const translateX = Math.random() * 200 - 200;
+    const translateY = Math.random() * -500 - 400;
+    const duration = Math.random() * 2 + 3;
+
+    heart.style.animation = `float ${duration}s ease-in-out infinite`;
+    heart.style.setProperty('--translateX', `${translateX}px`);
+    heart.style.setProperty('--translateY', `${translateY}px`);
+
+    heartContainer.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 5000);
   }
 
   noBtn.addEventListener("mouseover", noBtnHover);
@@ -98,6 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
     yesBtn.style.transform = 'scale(1)';
     noBtn.style.transform = 'scale(1)';
     noBtn.style.display = 'block';
+    noBtn.style.left = `${noBtnInitialPos.left}px`;
+    noBtn.style.top = `${noBtnInitialPos.top}px`;
 
     noBtn.textContent = "No";
     yesBtn.textContent = "Yes";
@@ -109,60 +144,42 @@ document.addEventListener('DOMContentLoaded', () => {
         question.innerHTML = "No, I love you";
         gif.style.width = gif.style.height = '100%';
         gif.src = "https://i.pinimg.com/originals/98/ed/29/98ed29a15944ee61c41c0e340f698b57.gif";
+        floatingHeartDuration = 400;
       } else {
         yesBtn.textContent = "Love you";
+        yesBtn.addEventListener("click", () => {
+          const numberOfHearts = Math.floor(Math.random() * 6) + 5;
+          for (let i = 0; i < numberOfHearts; i++) {
+            createHeartFromButton(yesBtn);
+          }
+        });
         noBtn.textContent = "Love you 3000";
         noBtn.classList.add("yes-btn");
         noBtn.classList.remove("no-btn");
         noBtn.removeEventListener("mouseover", noBtnHover);
-        noBtn.addEventListener("click", createHeartFromButton);
+        noBtn.addEventListener("click", () => {
+          const numberOfHearts = Math.floor(Math.random() * 6) + 5;
+          for (let i = 0; i < numberOfHearts; i++) {
+            createHeartFromButton(noBtn, true);
+          }
+        });
         question.innerHTML = "Aaaaaaaa, I love you very much";
         gif.style.width = gif.style.height = '80%';
         gif.src = "https://i.pinimg.com/originals/89/35/50/89355081a213ca3f622b0b39b94e9016.gif";
+        floatingHeartDuration = 300;
       }
-      return;
-    };
+    } else {
+      yesBtn.textContent = "Really?";
+      question.innerHTML = "Aaaaa, I like you too";
+      gif.src = "https://i.pinimg.com/originals/a7/1c/45/a71c452c6fd2e1bf2768d4bea583b146.gif";
+      gif.style.width = gif.style.height = '140%';
 
-    yesBtn.textContent = "Really?";
-    question.innerHTML = "Aaaaa, I like you too";
-    gif.src = "https://i.pinimg.com/originals/a7/1c/45/a71c452c6fd2e1bf2768d4bea583b146.gif";
-    gif.style.width = gif.style.height = '140%';
+      heartsCreated = true;
+      heartContainer.style.display = 'block';
 
-    heartsCreated = true;
-    heartContainer.style.display = 'block';
+      yesBtn.classList.add('clicked');
 
-    yesBtn.classList.add('clicked');
-
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-
-      const size = Math.random() * 30 + 20;
-      heart.style.width = `${size}px`;
-      heart.style.height = `${size}px`;
-
-      heart.style.setProperty('--size', `${size}px`);
-
-      heart.style.left = `${Math.random() * 100}%`;
-
-      const bottom = Math.random() * 100;
-      heart.style.bottom = `${bottom}px`;
-
-      const translateX = Math.random() * 200 - 200;
-      const translateY = Math.random() * -500 - 400;
-      const duration = Math.random() * 2 + 3;
-
-      heart.style.animation = `float ${duration}s ease-in-out infinite`;
-      heart.style.setProperty('--translateX', `${translateX}px`);
-      heart.style.setProperty('--translateY', `${translateY}px`);
-
-      heartContainer.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 5000);
+      setInterval(createHeart, floatingHeartDuration);
     }
-
-    setInterval(createHeart, 500);
   });
 });
